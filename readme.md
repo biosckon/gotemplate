@@ -1,4 +1,4 @@
-### gotemplate uses go text/template package to apply templates to data
+### gotemplate uses go [text/template](https://golang.org/pkg/text/template/) package to apply templates to data
 
 Example in the example folder:
 
