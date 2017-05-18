@@ -8,7 +8,15 @@ $ gotemplate index_template.html data.csv index.html
 
 take `index_template.html` parse it, take `data.csv` parse it, finally apply template to data and spit out the index.html.
 
-IF: index_template.html IS:
+Format:
+```gotemplate <template> <csv_file> [output_file]```
+
+Expected 2 arguments minimum:
+1. template {{.column1}}, .column1 is first column in data csv file, which is to be replaced by the second column
+2. data in csv format with 2 columns
+3. if present output_file will be overwritten, otherwise new created
+
+IF index_template.html IS:
 
 ```html
 CTYPE html>
@@ -24,7 +32,7 @@ CTYPE html>
 
 ```
 
-AND: data.csv IS:
+AND data.csv IS:
 
 ```csv
 title,Intersting page
@@ -48,3 +56,4 @@ THEN index.html will be:
 ```
 
 This is go text/template at it's simplest.
+I panic on any error.
