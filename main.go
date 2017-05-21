@@ -2,10 +2,14 @@ package main
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"flag"
+	"github.com/ghodss/yaml"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
+	"path/filepath"
 	"text/template"
 )
 
@@ -17,15 +21,42 @@ func file2map(fname string) map[string]string {
 	}
 	defer df.Close()
 
-	csv_read := csv.NewReader(df)
 	ret := make(map[string]string)
+	ext := filepath.Ext(fname)
 
-	for {
-		rec, err := csv_read.Read()
-		if err == io.EOF {
-			break
+	switch ext {
+	case "csv":
+		csv_reader := csv.NewReader(df)
+		for {
+			rec, err := csv_reader.Read()
+			if err == io.EOF {
+				break
+			}
+			if len(rec) > 1 {
+				ret[rec[0]] = rec[1]
+			}
+
 		}
-		ret[rec[0]] = rec[1]
+
+	case "yaml", "yml":
+		bytes, err := ioutil.ReadAll(df)
+		if err != nil {
+			log.Fatal("Error reading Yaml file", err)
+		}
+		err = yaml.Unmarshal(bytes, ret)
+		if err != nil {
+			log.Fatal("Error parsing Yaml file", err)
+		}
+
+	case "json":
+		bytes, err := ioutil.ReadAll(df)
+		if err != nil {
+			log.Fatal("Error reading json  file", err)
+		}
+		err = json.Unmarshal(bytes, ret)
+		if err != nil {
+			log.Fatal("Error parsing json file", err)
+		}
 	}
 
 	return ret
