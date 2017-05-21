@@ -59,6 +59,8 @@ func file2map(fname string) map[string]string {
 		}
 	}
 
+	log.Printf("%v\n", ret)
+
 	return ret
 }
 
