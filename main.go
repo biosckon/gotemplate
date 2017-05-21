@@ -15,7 +15,6 @@ import (
 
 // csv or json to map
 func file2map(fname string) map[string]string {
-	log.Println(fname)
 	df, err := os.Open(fname)
 	if err != nil {
 		log.Fatal("Error: opening data file: ", err)
