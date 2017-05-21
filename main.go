@@ -43,7 +43,7 @@ func file2map(fname string) map[string]string {
 		if err != nil {
 			log.Fatal("Error reading Yaml file", err)
 		}
-		err = yaml.Unmarshal(bytes, ret)
+		err = yaml.Unmarshal(bytes, &ret)
 		if err != nil {
 			log.Fatal("Error parsing Yaml file", err)
 		}
@@ -53,7 +53,7 @@ func file2map(fname string) map[string]string {
 		if err != nil {
 			log.Fatal("Error reading json  file", err)
 		}
-		err = json.Unmarshal(bytes, ret)
+		err = json.Unmarshal(bytes, &ret)
 		if err != nil {
 			log.Fatal("Error parsing json file", err)
 		}
