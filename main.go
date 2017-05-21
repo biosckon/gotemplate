@@ -25,7 +25,7 @@ func file2map(fname string) map[string]string {
 	ext := filepath.Ext(fname)
 
 	switch ext {
-	case "csv":
+	case ".csv":
 		csv_reader := csv.NewReader(df)
 		for {
 			rec, err := csv_reader.Read()
@@ -38,7 +38,7 @@ func file2map(fname string) map[string]string {
 
 		}
 
-	case "yaml", "yml":
+	case ".yaml", ".yml":
 		bytes, err := ioutil.ReadAll(df)
 		if err != nil {
 			log.Fatal("Error reading Yaml file", err)
@@ -48,7 +48,7 @@ func file2map(fname string) map[string]string {
 			log.Fatal("Error parsing Yaml file", err)
 		}
 
-	case "json":
+	case ".json":
 		bytes, err := ioutil.ReadAll(df)
 		if err != nil {
 			log.Fatal("Error reading json  file", err)
