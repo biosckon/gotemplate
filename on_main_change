@@ -1,0 +1,7 @@
+#!/bin/bash
+
+clear
+go install -gcflags '-N -l'
+gotemplate example/*.gohtml example/data.yaml
+
+

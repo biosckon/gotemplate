@@ -13,7 +13,7 @@ import (
 	"text/template"
 )
 
-// csv or json to map
+// csv/ json/ yaml to map
 func file2map(fname string) map[string]string {
 	df, err := os.Open(fname)
 	if err != nil {
@@ -62,49 +62,65 @@ func file2map(fname string) map[string]string {
 	return ret
 }
 
-func init_tpl(files string) *template.Template {
-	tpl := template.Must(template.ParseGlob(files))
+func init_tpl(globs []string) *template.Template {
+	// collect all files, extend globs
+	files := make(map[string]bool)
+
+	for _, glob := range globs {
+		fs, err := filepath.Glob(glob)
+		if err != nil {
+			log.Println("Error parsing file as Glob: ", err)
+			continue
+		}
+
+		for _, f := range fs {
+			files[f] = true
+		}
+	}
+
+	all_files := make([]string, len(files))
+
+	if len(all_files) == 0 {
+		log.Fatal("init_tpl has no files to process")
+	}
+
+	i := 0
+	for f := range files {
+		all_files[i] = f
+		i++
+	}
+
+	tpl := template.Must(template.ParseFiles(all_files...))
 	tpl = tpl.Option("missingkey=error")
+
 	return tpl
 }
 
 func main() {
 	flag.Parse()
 
-	// expecting
-	// args[0] file with template
-	// args[1] file with data file (json, csv); use csv by default
-	// if there is a args[2] it is used a output otherwise stdout
+	// expecting at least 2 arguments
+	// last argument is name of the data file
+	// data file in (yaml/yml, json, csv) format
+	// 0 to all but last are expected to be templates
+	// all output shall go to stdout
 	args := flag.Args()
 
 	if len(args) < 2 {
-		log.Fatal("Error: Minimum number of arguments 2. Template first followed by the data file (*.json or *.csv).")
+		log.Fatal("Error: Minimum number of arguments 2. Template first followed by the data file (*.json or *.csv) last.")
 	}
 
-	templ_fname := args[0]
-	data_fname := args[1]
-	out_fname := ""
+	_last := len(args) - 1
+	tpl_fnames := args[0:_last] // all but last
+	data_fname := args[_last]
 	outf := os.Stdout
 	var err error
 
-	if len(args) == 3 {
-		out_fname = args[2]
-	}
-
-	// Parse tempalte file
-	tpl := init_tpl(templ_fname)
+	// Parse tempalte files
+	tpl := init_tpl(tpl_fnames)
 
 	// get data
 	data := file2map(data_fname)
-
-	// decide on output file
-	if out_fname != "" {
-		outf, err = os.Create(out_fname)
-		if err != nil {
-			log.Fatal("Error: creating/ ovewriting file: ", err)
-		}
-		defer outf.Close()
-	}
 
 	// run the template
 	err = tpl.ExecuteTemplate(outf, "index", data)
