@@ -98,6 +98,7 @@ func main() {
 	data := file2map(data_fname)
 
 	// decide on output file
+	// let out
 	if out_fname != "" {
 		outf, err = os.Create(out_fname)
 		if err != nil {
