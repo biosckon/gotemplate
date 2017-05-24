@@ -9,7 +9,8 @@ $ gotemplate example/index.gohtml data.csv > index.html
 take `index_template.html` parse it, take `data.csv` parse it, finally apply template to data and spit out the index.html.
 
 Format:
-```gotemplate <template[s]*> <csv_file> 
+```Shell
+$ gotemplate <template[s]*> <csv_file> 
 ```
 
 Expected 2 arguments minimum:

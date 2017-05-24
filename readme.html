@@ -2,7 +2,8 @@
 <p>Example in the example folder:</p>
 <pre class="shell"><code>$ gotemplate example/index.gohtml data.csv &gt; index.html</code></pre>
 <p>take <code>index_template.html</code> parse it, take <code>data.csv</code> parse it, finally apply template to data and spit out the index.html.</p>
-<p>Format: <code>gotemplate &lt;template[s]*&gt; &lt;csv_file&gt;</code></p>
+<p>Format:</p>
+<pre class="shell"><code>$ gotemplate &lt;template[s]*&gt; &lt;csv_file&gt; </code></pre>
 <p>Expected 2 arguments minimum: 1. template file or files or mask eg. *.gohtml. In the template {{.column1}}, .column1 is first column in data csv file, which is to be replaced by the second column 2. data in csv format with 2 columns</p>
 <h3 id="one-of-templates-must-define-a-start-template-like-so">one of templates must define a start template like so:</h3>
 <div class="sourceCode"><pre class="sourceCode go"><code class="sourceCode go">{{define <span class="st">&quot;start&quot;</span>}}
