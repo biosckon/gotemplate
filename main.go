@@ -123,7 +123,7 @@ func main() {
 	data := file2map(data_fname)
 
 	// run the template
-	err = tpl.ExecuteTemplate(outf, "index", data)
+	err = tpl.ExecuteTemplate(outf, "start", data)
 	if err != nil {
 		log.Fatal("Error excuting template: ", err)
 	}

@@ -3,7 +3,7 @@
 Example in the example folder:
 
 ```Shell
-$ gotemplate index_template.html data.csv > index.html
+$ gotemplate example/index.gohtml data.csv > index.html
 ```
 
 take `index_template.html` parse it, take `data.csv` parse it, finally apply template to data and spit out the index.html.
@@ -15,6 +15,15 @@ Format:
 Expected 2 arguments minimum:
 1. template file or files or mask eg. *.gohtml. In the template {{.column1}}, .column1 is first column in data csv file, which is to be replaced by the second column
 2. data in csv format with 2 columns
+
+### one of templates must define a start template like so:
+```go
+{{define "start"}}
+
+    call all the other templates from here...
+    
+{{end}}
+```
 
 
 IF index_template.html IS:
