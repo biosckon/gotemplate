@@ -14,14 +14,14 @@ import (
 )
 
 // csv/ json/ yaml to map
-func file2map(fname string) map[string]string {
+func file2map(fname string) map[string]interface{} {
 	df, err := os.Open(fname)
 	if err != nil {
 		log.Fatal("Error: opening data file: ", err)
 	}
 	defer df.Close()
 
-	ret := make(map[string]string)
+	ret := make(map[string]interface{})
 	ext := filepath.Ext(fname)
 
 	switch ext {
@@ -114,7 +114,6 @@ func main() {
 	tpl_fnames := args[0:_last] // all but last
 	data_fname := args[_last]
 	outf := os.Stdout
-	var err error
 
 	// Parse tempalte files
 	tpl := init_tpl(tpl_fnames)
@@ -123,7 +122,7 @@ func main() {
 	data := file2map(data_fname)
 
 	// run the template
-	err = tpl.ExecuteTemplate(outf, "start", data)
+	err := tpl.ExecuteTemplate(outf, "start", data)
 	if err != nil {
 		log.Fatal("Error excuting template: ", err)
 	}
